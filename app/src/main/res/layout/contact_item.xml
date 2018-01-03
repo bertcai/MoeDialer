@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/contact_catagory"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/contactTitleBg"
+        android:gravity="center_vertical"
+        android:paddingLeft="5dp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/contact_name"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/contactItemBg"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp" />
+</LinearLayout>

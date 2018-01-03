@@ -4,8 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.cc.moedialer.Dialer.DialpadView
-        android:id="@+id/dialer_pad"
+    <!--<com.example.cc.moedialer.Dialer.DialpadView-->
+        <!--android:id="@+id/dialer_pad"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
+
+    <fragment
+        android:id="@+id/contact_fragment"
+        android:name="com.example.cc.moedialer.Contacts.ContactFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>

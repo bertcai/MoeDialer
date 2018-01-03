@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dialpadView = (DialpadView) findViewById(R.id.dialer_pad);
+//        dialpadView = (DialpadView) findViewById(R.id.dialer_pad);
 
     }
 
