@@ -17,7 +17,7 @@
         android:id="@+id/contact_name"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@color/contactItemBg"
+        android:background="@drawable/ripple"
         android:gravity="center_vertical"
         android:paddingLeft="10dp" />
 </LinearLayout>

@@ -21,34 +21,36 @@ import java.util.List;
  */
 
 public class SideBar extends View {
-    public static String[] INDEX_STRING = {
-            "A", "B", "C", "D", "E", "F", "G", "H",
-            "I", "J", "K", "L", "M", "N", "O", "P",
-            "Q", "R", "S", "T", "U", "V", "W", "X",
-            "Y", "Z", "#"
-    };
+
+    public static String[] INDEX_STRING = {"A", "B", "C", "D", "E", "F", "G", "H", "I",
+            "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+            "W", "X", "Y", "Z", "#"};
 
     private OnTouchingLetterChangedListener onTouchingLetterChangedListener;
     private List<String> letterList;
     private int choose = -1;
     private Paint paint = new Paint();
     private TextView mTextDialog;
-
-    public SideBar(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-    }
+    private Context context;
 
     public SideBar(Context context) {
-        super(context, null);
+        this(context, null);
+        this.context = context;
+    }
+
+    public SideBar(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+        this.context = context;
     }
 
     public SideBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.context = context;
         init();
     }
 
     private void init() {
-        setBackgroundColor(Color.parseColor("#FFFFFF"));
+        setBackgroundColor(context.getColor(R.color.sideBarBackground));
         letterList = Arrays.asList(INDEX_STRING);
     }
 
@@ -56,23 +58,22 @@ public class SideBar extends View {
         super.onDraw(canvas);
         int height = getHeight();
         int width = getWidth();
-        int singleHeight = height / letterList.size(); //get the letter's height
+        int singleHeight = height / letterList.size();
         for (int i = 0; i < letterList.size(); i++) {
-            paint.setColor(Color.parseColor("#606060"));
+            paint.setColor(context.getColor(R.color.sideBarText));
             paint.setTypeface(Typeface.DEFAULT_BOLD);
             paint.setAntiAlias(true);
             paint.setTextSize(20);
+
             if (i == choose) {
-                paint.setColor(Color.parseColor("#4F41FD"));
+                paint.setColor(context.getColor((R.color.sideBarChose)));
                 paint.setFakeBoldText(true);
             }
-
             float xPos = width / 2 - paint.measureText(letterList.get(i)) / 2;
             float yPos = singleHeight * i + singleHeight / 2;
             canvas.drawText(letterList.get(i), xPos, yPos, paint);
             paint.reset();
         }
-
     }
 
     @Override
@@ -85,7 +86,7 @@ public class SideBar extends View {
 
         switch (action) {
             case MotionEvent.ACTION_UP:
-                setBackgroundColor(Color.parseColor("#FFFFFF"));
+                setBackgroundColor(context.getColor(R.color.sideBarBackground));
                 choose = -1;
                 invalidate();
                 if (mTextDialog != null) {
@@ -93,8 +94,9 @@ public class SideBar extends View {
                 }
                 break;
             default:
-                setBackgroundResource(R.drawable.delete_background);
-                if (oldChoose != choose) {
+//                setBackgroundResource(R.drawable.search_edit_background);
+                setBackgroundColor(context.getColor(R.color.sideBarPress));
+                if (oldChoose != c) {
                     if (c >= 0 && c < letterList.size()) {
                         if (listener != null) {
                             listener.onTouchingLetterChanged(letterList.get(c));
@@ -112,20 +114,22 @@ public class SideBar extends View {
         return true;
     }
 
-    public void setIndexText(ArrayList<String> indexString){
-        this.letterList = indexString;
+    public void setIndexText(ArrayList<String> indexStrings) {
+        this.letterList = indexStrings;
         invalidate();
     }
 
-    public void setTextView(TextView mTextDialog){
+
+    public void setTextView(TextView mTextDialog) {
         this.mTextDialog = mTextDialog;
     }
 
 
-    public void setOnTouchingLetterChangedListener(OnTouchingLetterChangedListener
-                                                           onTouchingLetterChangedListener){
+    public void setOnTouchingLetterChangedListener(
+            OnTouchingLetterChangedListener onTouchingLetterChangedListener) {
         this.onTouchingLetterChangedListener = onTouchingLetterChangedListener;
     }
+
 
     public interface OnTouchingLetterChangedListener {
         void onTouchingLetterChanged(String s);

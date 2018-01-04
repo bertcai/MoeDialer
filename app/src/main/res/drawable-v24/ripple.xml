@@ -2,7 +2,7 @@
     android:color="@color/whitePress">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/normalBg"/>
+            <solid android:color="@color/contactItemBg"/>
             <corners android:radius="4dp"/>
         </shape>
     </item>

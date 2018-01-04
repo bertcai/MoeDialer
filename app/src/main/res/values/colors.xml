@@ -9,9 +9,10 @@
     <color name="dialerNumber">#616161</color>
     <color name="call">#00C853</color>
     <color name="callPress">#B9F6CA</color>
-    <color name="sideBarBackground">#9E9E9E</color>
-    <color name="sideBarLetter">#606060</color>
+    <color name="sideBarBackground">#F5F5F5</color>
+    <color name="sideBarPress">#EEEEEE</color>
     <color name="sideBarChose">#4F41FD</color>
+    <color name="sideBarText">#606060</color>
     <color name="toastBg">#424242</color>
     <color name="contactTitleBg">#EEEEEE</color>
     <color name="contactItemBg">#F5F5F5</color>

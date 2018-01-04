@@ -6,14 +6,32 @@ package com.example.cc.moedialer.Contacts;
 
 public class ContactItemModel {
     private String name; //the contact 's name
-    private String sortLetter; //the contact's name 's first PinYin
+    private String sortLetters; //the contact's name 's first PinYin
+    private long id;
+    private String number;
 
     public String getName() {
         return name;
     }
 
     public String getSortLetters() {
-        return sortLetter;
+        return sortLetters;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public void setName(String name) {
@@ -21,6 +39,6 @@ public class ContactItemModel {
     }
 
     public void setSortLetter(String sortLetter) {
-        this.sortLetter = sortLetter;
+        this.sortLetters = sortLetter;
     }
 }
