@@ -16,4 +16,5 @@
     <color name="toastBg">#424242</color>
     <color name="contactTitleBg">#EEEEEE</color>
     <color name="contactItemBg">#F5F5F5</color>
+    <color name="black">#000</color>
 </resources>

@@ -47,7 +47,7 @@ public class ContactFragment extends Fragment {
     private TextView dialog;
     private SortAdapter adapter;
     private EditTextWithDel mEtSearchName;
-    private List<ContactItemModel> sourceDateList;
+    private List<ContactItemModel> sourceDataList;
     private View view;
     List<ContactItemModel> sourceModelList;
 
@@ -76,9 +76,9 @@ public class ContactFragment extends Fragment {
     }
 
     private void setAdapter() {
-        sourceDateList = filledData(sourceModelList);
-        Collections.sort(sourceDateList, new PinyinComparator());
-        adapter = new SortAdapter(this.getContext(), sourceDateList);
+        sourceDataList = filledData(sourceModelList);
+        Collections.sort(sourceDataList, new PinyinComparator());
+        adapter = new SortAdapter(this.getContext(), sourceDataList);
         sortListView.setAdapter(adapter);
     }
 
@@ -144,10 +144,10 @@ public class ContactFragment extends Fragment {
     private void filterData(String filterStr) {
         List<ContactItemModel> mSortList = new ArrayList<>();
         if (TextUtils.isEmpty(filterStr)) {
-            mSortList = sourceDateList;
+            mSortList = sourceDataList;
         } else {
             mSortList.clear();
-            for (ContactItemModel item : sourceDateList) {
+            for (ContactItemModel item : sourceDataList) {
                 String name = item.getName();
                 if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase())
                         != -1 || PinyinUtils.getAlpha(name).toUpperCase()
@@ -223,7 +223,8 @@ public class ContactFragment extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
