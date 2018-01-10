@@ -1,13 +1,11 @@
 package com.example.cc.moedialer.Call;
 
 import android.Manifest;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.app.Fragment;
-import android.provider.CallLog;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -51,18 +49,10 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
         }
     }
 
-    private void onClickButton(long callId) {
-        if (ContextCompat.checkSelfPermission(parent.getContext(), Manifest.permission.READ_CALL_LOG)
-                != PackageManager.PERMISSION_GRANTED) {
-            parent.requestPermissions(new String[]{Manifest.permission.READ_CALL_LOG},
-                    1);
-        } else {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_VIEW);
-            Uri uri = ContentUris.withAppendedId(CallLog.Calls.CONTENT_URI, callId);
-            intent.setData(uri);
-            parent.getContext().startActivity(intent);
-        }
+    private void onClickButton(CallItemModel mContent) {
+        Intent intent = new Intent(parent.getContext(), CallDetailActivity.class);
+        intent.putExtra("item",mContent);
+        parent.startActivity(intent);
     }
 
     @Override
@@ -85,7 +75,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
 //                        .show();
                 int position = holder.getAdapterPosition();
                 CallItemModel mContent = list.get(position);
-                onClickButton(mContent.getCall_id());
+                onClickButton(mContent);
             }
         });
         return holder;
@@ -99,6 +89,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
         String type = mContent.getType();
         String duration = mContent.getCallTime();
         String date = mContent.getDate();
+        holder.tvIsCallMade.setText("");
 
         if (name != null) {
             holder.tvTitle.setText(name);

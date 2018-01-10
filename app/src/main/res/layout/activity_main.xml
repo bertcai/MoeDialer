@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="vertical">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"
+        app:tabSelectedTextColor="@color/choseTitleText"
+        app:tabTextColor="@color/TitleText" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <!--<com.example.cc.moedialer.Dialer.DialpadView-->
     <!--android:id="@+id/dialer_pad"-->
@@ -15,9 +32,9 @@
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"/>-->
 
-    <fragment
-        android:id="@+id/call_fragment"
-        android:name="com.example.cc.moedialer.Call.CallDataFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!--<fragment-->
+    <!--android:id="@+id/call_fragment"-->
+    <!--android:name="com.example.cc.moedialer.Call.CallDataFragment"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
 </LinearLayout>

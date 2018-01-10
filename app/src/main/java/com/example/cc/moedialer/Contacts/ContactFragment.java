@@ -2,7 +2,7 @@ package com.example.cc.moedialer.Contacts;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;

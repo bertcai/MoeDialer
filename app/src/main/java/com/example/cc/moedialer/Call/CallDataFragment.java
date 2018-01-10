@@ -1,8 +1,9 @@
 package com.example.cc.moedialer.Call;
 
 import android.Manifest;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -36,6 +37,9 @@ public class CallDataFragment extends Fragment {
     private List<CallItemModel> sourceDataList;
     private CallAdapter adapter;
     private View callView;
+    private int lastOffset;
+    private int lastPosition;
+    private SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
@@ -57,6 +61,15 @@ public class CallDataFragment extends Fragment {
         callListView = (RecyclerView) callView.findViewById(R.id.call_lv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         callListView.setLayoutManager(layoutManager);
+        callListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(recyclerView.getLayoutManager()!=null){
+                    getPositionAndOffset();
+                }
+            }
+        });
         setAdapter();
 //        initEvents();
 //        setAdapter();
@@ -80,6 +93,26 @@ public class CallDataFragment extends Fragment {
 //        });
 //    }
 
+
+    private void getPositionAndOffset(){
+        LinearLayoutManager layoutManager = (LinearLayoutManager) callListView.getLayoutManager();
+        View topView = layoutManager.getChildAt(0);
+        if(topView!=null){
+            lastOffset=topView.getTop();
+            lastPosition= layoutManager.getPosition(topView);
+
+            sharedPreferences= this.getActivity()
+                    .getSharedPreferences("key", this.getActivity().MODE_PRIVATE);
+
+            SharedPreferences.Editor editor =sharedPreferences.edit();
+
+            editor.putInt("lastOffset",lastOffset);
+
+            editor.putInt("lastPosition",lastPosition);
+
+            editor.commit();
+        }
+    }
 
     private void readCallData() {
         sourceDataList = new ArrayList<>();
@@ -135,7 +168,10 @@ public class CallDataFragment extends Fragment {
 
                     //Call Date
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat detailDateFormat =
+                            new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     Date callDate = new Date(Long.parseLong(cursor.getString(3)));
+                    String trueDate = detailDateFormat.format(callDate);
                     String callDateStr = sdf.format(callDate);
                     if (callDateStr.equals(date_today)) { //is today?
                         sdf = new SimpleDateFormat("HH:mm");
@@ -172,7 +208,7 @@ public class CallDataFragment extends Fragment {
                     long callId = Integer.parseInt(cursor.getString(5));
 
                     callItem = new CallItemModel(callName, callTypeStr,
-                            callDateStr, callNumber, callDurationStr, callId);
+                            callDateStr, callNumber, callDurationStr, callId, trueDate);
                     sourceDataList.add(callItem);
                 }
             }
@@ -200,5 +236,37 @@ public class CallDataFragment extends Fragment {
                 break;
             default:
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getPositionAndOffset();
+    }
+
+    //use resume to achieve live-update
+    @Override
+    public void onResume() {
+        super.onResume();
+        readCallData();
+        init();
+        scrollToPosition();
+    }
+
+    private void scrollToPosition() {
+
+        sharedPreferences= this.getActivity()
+                .getSharedPreferences("key",this.getActivity().MODE_PRIVATE);
+
+        lastOffset=sharedPreferences.getInt("lastOffset",0);
+
+        lastPosition=sharedPreferences.getInt("lastPosition",0);
+
+        if(callListView.getLayoutManager() !=null&&lastPosition>=0) {
+
+            ((LinearLayoutManager)callListView.getLayoutManager()).scrollToPositionWithOffset(lastPosition,lastOffset);
+
+        }
+
     }
 }

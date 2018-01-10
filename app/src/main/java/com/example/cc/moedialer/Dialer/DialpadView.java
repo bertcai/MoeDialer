@@ -2,7 +2,10 @@ package com.example.cc.moedialer.Dialer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.net.Uri;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -22,6 +25,11 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
     private EditText inputPhoneNum;
     Context context;
     AttributeSet attrs;
+    private ToneGenerator mToneGenerator;
+    private Object mToneGeneratorLock = new Object();
+    private Boolean mDTMFToneEnabled;
+    private static final int TONE_LENGTH_MS = 150;
+    private AudioManager mAudioManager;
 
     public DialpadView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -60,6 +68,24 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
             }
         });
         call.setOnClickListener(this);
+
+        mAudioManager = (AudioManager) context.getSystemService(
+                Context.AUDIO_SERVICE);
+        mDTMFToneEnabled = Settings.System.getInt(
+                context.getContentResolver(),
+                Settings.System.DTMF_TONE_WHEN_DIALING,1)==1;
+        synchronized (mToneGeneratorLock){
+            if(mToneGenerator == null){
+                try {
+                    mToneGenerator = new ToneGenerator(
+                            AudioManager.STREAM_MUSIC, 80);
+                } catch (Exception e){
+                    e.printStackTrace();
+                    mToneGenerator = null;
+                }
+            }
+        }
+
     }
 
     @Override
@@ -68,39 +94,51 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.one:
                 inputAdd('1');
+                playTone(1);
                 break;
             case R.id.two:
                 inputAdd('2');
+                playTone(2);
                 break;
             case R.id.three:
                 inputAdd('3');
+                playTone(3);
                 break;
             case R.id.four:
                 inputAdd('4');
+                playTone(4);
                 break;
             case R.id.five:
                 inputAdd('5');
+                playTone(5);
                 break;
             case R.id.six:
                 inputAdd('6');
+                playTone(6);
                 break;
             case R.id.seven:
                 inputAdd('7');
+                playTone(7);
                 break;
             case R.id.eight:
                 inputAdd('8');
+                playTone(8);
                 break;
             case R.id.nine:
                 inputAdd('9');
+                playTone(9);
                 break;
             case R.id.zero:
                 inputAdd('0');
+                playTone(0);
                 break;
             case R.id.star_key:
                 inputAdd('*');
+                playTone(42);
                 break;
             case R.id.pound_key:
                 inputAdd('#');
+                playTone(35);
                 break;
             case R.id.delete_phone_number:
                 temp = inputPhoneNum.getText().toString();
@@ -113,6 +151,25 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
                 call(temp);
                 break;
 
+        }
+    }
+
+    private void playTone(int tone){
+        if(!mDTMFToneEnabled){
+            return;
+        }
+
+        int ringerMode = mAudioManager.getRingerMode();
+        if((ringerMode==mAudioManager.RINGER_MODE_SILENT
+                ||ringerMode==mAudioManager.RINGER_MODE_VIBRATE)){
+            return;
+        }
+
+        synchronized (mToneGeneratorLock) {
+            if(mToneGenerator==null){
+                return;
+            }
+            mToneGenerator.startTone(tone, TONE_LENGTH_MS);
         }
     }
 
