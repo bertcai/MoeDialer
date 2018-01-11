@@ -6,7 +6,8 @@
     <color name="white">#FFF</color>
     <color name="normalBg">#FAFAFA</color>
     <color name="whitePress">#BDBDBD</color>
-    <color name="dialerNumber">#616161</color>
+    <color name="dialerNumber">#039BE5</color>
+    <color name="dialerNumberSpecial">#B3B3B3</color>
     <color name="call">#00C853</color>
     <color name="callPress">#B9F6CA</color>
     <color name="sideBarBackground">#F5F5F5</color>
@@ -23,4 +24,5 @@
     <color name="lineTitleContract">#00FFFF</color>
     <color name="choseTitleText">#FFF</color>
     <color name="TitleText">#B3B3B3</color>
+    <color name="footerBg">#F5F5F5</color>
 </resources>

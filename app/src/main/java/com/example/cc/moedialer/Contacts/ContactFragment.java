@@ -1,7 +1,7 @@
 package com.example.cc.moedialer.Contacts;
 
 import android.Manifest;
-import android.app.Activity;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.content.ContentUris;
 import android.content.Intent;
@@ -9,15 +9,14 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +30,7 @@ import com.example.cc.moedialer.PinyinComparator;
 import com.example.cc.moedialer.PinyinUtils;
 import com.example.cc.moedialer.R;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,6 +46,7 @@ public class ContactFragment extends Fragment {
     private EditTextWithDel mEtSearchName;
     private List<ContactItemModel> sourceDataList;
     private View view;
+    private FloatingActionButton addContact;
     List<ContactItemModel> sourceModelList;
 
     @Nullable
@@ -70,9 +68,11 @@ public class ContactFragment extends Fragment {
         sideBar = (SideBar) view.findViewById(R.id.sidebar);
         dialog = (TextView) view.findViewById(R.id.dialog);
         mEtSearchName = (EditTextWithDel) view.findViewById(R.id.edit_search);
+        addContact = (FloatingActionButton) view.findViewById(R.id.add_contact);
         initData();
         initEvents();
         setAdapter();
+        filterData(mEtSearchName.getText().toString());
     }
 
     private void setAdapter() {
@@ -135,6 +135,23 @@ public class ContactFragment extends Fragment {
 
             }
         });
+
+        //shield enter
+        mEtSearchName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                return (event.getKeyCode()==KeyEvent.KEYCODE_ENTER);
+            }
+        });
+
+        addContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_INSERT,
+                        Uri.parse("content://com.android.contacts/contacts"));
+                startActivity(intent);
+            }
+        });
     }
 
     private void initData() {
@@ -149,9 +166,11 @@ public class ContactFragment extends Fragment {
             mSortList.clear();
             for (ContactItemModel item : sourceDataList) {
                 String name = item.getName();
+                String number = item.getNumber();
                 if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase())
                         != -1 || PinyinUtils.getAlpha(name).toUpperCase()
-                        .startsWith(filterStr.toString().toUpperCase())) {
+                        .startsWith(filterStr.toString().toUpperCase())
+                        || number.contains(filterStr.toString())) {
                     mSortList.add(item);
                 }
             }
@@ -237,5 +256,17 @@ public class ContactFragment extends Fragment {
                 break;
             default:
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        readContacts();
+        init();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 }

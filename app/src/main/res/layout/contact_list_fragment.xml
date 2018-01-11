@@ -60,5 +60,16 @@
             android:layout_width="20dp"
             android:layout_height="match_parent"
             android:layout_gravity="right|center" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_contact"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:src="@drawable/ic_person_add_white_24dp"
+            app:backgroundTint="@color/dialerButtonColor"
+            app:rippleColor="@color/dialerPressButtonColor" />
     </FrameLayout>
 </LinearLayout>

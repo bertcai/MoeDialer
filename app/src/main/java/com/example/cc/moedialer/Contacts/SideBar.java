@@ -58,7 +58,10 @@ public class SideBar extends View {
         super.onDraw(canvas);
         int height = getHeight();
         int width = getWidth();
-        int singleHeight = height / letterList.size();
+        int singleHeight = 0;
+        if(letterList.size()!=0) {
+            singleHeight = height / letterList.size();
+        }
         for (int i = 0; i < letterList.size(); i++) {
             paint.setColor(context.getColor(R.color.sideBarText));
             paint.setTypeface(Typeface.DEFAULT_BOLD);

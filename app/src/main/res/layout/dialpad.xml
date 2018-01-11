@@ -13,15 +13,15 @@
 
         <EditText
             android:id="@+id/input_phone_number"
-            android:layout_gravity="center"
-            android:textSize="30sp"
-            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="7"
             android:height="60dp"
             android:background="@null"
-            android:inputType="phone" />
+            android:gravity="center"
+            android:inputType="phone"
+            android:textSize="30sp" />
 
         <ImageButton
             android:id="@+id/delete_phone_number"
@@ -60,7 +60,9 @@
                 android:background="@drawable/dialer_button_ripple"
                 android:text="1"
                 android:textColor="@color/dialerNumber"
-                android:textSize="40sp" />
+                android:textSize="40sp"
+                android:textStyle="normal"
+                android:typeface="normal" />
 
             <Button
                 android:id="@+id/two"
@@ -170,7 +172,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/dialer_button_ripple"
                 android:text="*"
-                android:textColor="@color/dialerNumber"
+                android:textColor="@color/dialerNumberSpecial"
                 android:textSize="40sp" />
 
             <Button
@@ -190,7 +192,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/dialer_button_ripple"
                 android:text="#"
-                android:textColor="@color/dialerNumber"
+                android:textColor="@color/dialerNumberSpecial"
                 android:textSize="40sp" />
         </LinearLayout>
 

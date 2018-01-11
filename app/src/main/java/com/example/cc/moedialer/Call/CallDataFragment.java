@@ -1,12 +1,12 @@
 package com.example.cc.moedialer.Call;
 
 import android.Manifest;
-import android.support.v4.app.Fragment;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CallLog;
 import android.support.annotation.NonNull;
@@ -17,10 +17,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.cc.moedialer.Dialer.DialerActivity;
 import com.example.cc.moedialer.R;
 
 import java.text.SimpleDateFormat;
@@ -40,6 +39,7 @@ public class CallDataFragment extends Fragment {
     private int lastOffset;
     private int lastPosition;
     private SharedPreferences sharedPreferences;
+    private FloatingActionButton dilerButton;
 
     @Nullable
     @Override
@@ -65,7 +65,7 @@ public class CallDataFragment extends Fragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(recyclerView.getLayoutManager()!=null){
+                if (recyclerView.getLayoutManager() != null) {
                     getPositionAndOffset();
                 }
             }
@@ -73,10 +73,19 @@ public class CallDataFragment extends Fragment {
         setAdapter();
 //        initEvents();
 //        setAdapter();
+
+        dilerButton = (FloatingActionButton) callView.findViewById(R.id.dialer_button);
+        dilerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), DialerActivity.class);
+                getContext().startActivity(intent);
+            }
+        });
     }
 
     private void setAdapter() {
-        adapter = new CallAdapter(this,this.getContext(), sourceDataList);
+        adapter = new CallAdapter(this, this.getContext(), sourceDataList);
         callListView.setAdapter(adapter);
     }
 
@@ -94,21 +103,21 @@ public class CallDataFragment extends Fragment {
 //    }
 
 
-    private void getPositionAndOffset(){
+    private void getPositionAndOffset() {
         LinearLayoutManager layoutManager = (LinearLayoutManager) callListView.getLayoutManager();
         View topView = layoutManager.getChildAt(0);
-        if(topView!=null){
-            lastOffset=topView.getTop();
-            lastPosition= layoutManager.getPosition(topView);
+        if (topView != null) {
+            lastOffset = topView.getTop();
+            lastPosition = layoutManager.getPosition(topView);
 
-            sharedPreferences= this.getActivity()
+            sharedPreferences = this.getActivity()
                     .getSharedPreferences("key", this.getActivity().MODE_PRIVATE);
 
-            SharedPreferences.Editor editor =sharedPreferences.edit();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
 
-            editor.putInt("lastOffset",lastOffset);
+            editor.putInt("lastOffset", lastOffset);
 
-            editor.putInt("lastPosition",lastPosition);
+            editor.putInt("lastPosition", lastPosition);
 
             editor.commit();
         }
@@ -169,7 +178,7 @@ public class CallDataFragment extends Fragment {
                     //Call Date
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     SimpleDateFormat detailDateFormat =
-                            new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date callDate = new Date(Long.parseLong(cursor.getString(3)));
                     String trueDate = detailDateFormat.format(callDate);
                     String callDateStr = sdf.format(callDate);
@@ -255,16 +264,16 @@ public class CallDataFragment extends Fragment {
 
     private void scrollToPosition() {
 
-        sharedPreferences= this.getActivity()
-                .getSharedPreferences("key",this.getActivity().MODE_PRIVATE);
+        sharedPreferences = this.getActivity()
+                .getSharedPreferences("key", this.getActivity().MODE_PRIVATE);
 
-        lastOffset=sharedPreferences.getInt("lastOffset",0);
+        lastOffset = sharedPreferences.getInt("lastOffset", 0);
 
-        lastPosition=sharedPreferences.getInt("lastPosition",0);
+        lastPosition = sharedPreferences.getInt("lastPosition", 0);
 
-        if(callListView.getLayoutManager() !=null&&lastPosition>=0) {
+        if (callListView.getLayoutManager() != null && lastPosition >= 0) {
 
-            ((LinearLayoutManager)callListView.getLayoutManager()).scrollToPositionWithOffset(lastPosition,lastOffset);
+            ((LinearLayoutManager) callListView.getLayoutManager()).scrollToPositionWithOffset(lastPosition, lastOffset);
 
         }
 

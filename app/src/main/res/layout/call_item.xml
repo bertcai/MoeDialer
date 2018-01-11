@@ -3,65 +3,74 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/call_data_ripple"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="35dp"
-        android:layout_weight="4"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="4"
+            android:orientation="vertical"
+            android:paddingLeft="35dp">
 
-            <TextView
-                android:id="@+id/call_title"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/call_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/is_call_made"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="10dp"
+                    android:text=""
+                    android:textSize="9sp" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/is_call_made"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="4dp"
-                android:layout_marginTop="10dp"
-                android:text=""
-                android:textSize="9sp" />
+                android:id="@+id/call_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/sideBarText"
+                android:textSize="12sp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/call_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/sideBarText"
-            android:textSize="12sp" />
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:background="@color/whitePress"></LinearLayout>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/call_data_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/dialer_button_ripple"
+                android:src="@drawable/ic_chevron_right_black_24dp" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_marginLeft="35dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/whitePress">
 
-        <ImageButton
-            android:id="@+id/call_data_btn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/dialer_button_ripple"
-            android:src="@drawable/ic_chevron_right_black_24dp" />
     </LinearLayout>
 
 

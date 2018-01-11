@@ -35,9 +35,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED
+                ||ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new
-                    String[]{Manifest.permission.CALL_PHONE}, 1);
+                    String[]{Manifest.permission.CALL_PHONE,Manifest.permission.READ_CONTACTS}, 1);
         }
         setContentView(R.layout.activity_main);
         initView();

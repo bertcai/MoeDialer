@@ -45,6 +45,7 @@ public class EditTextWithDel extends AppCompatEditText {
                 setDrawable();
             }
         });
+
         setDrawable();
     }
 

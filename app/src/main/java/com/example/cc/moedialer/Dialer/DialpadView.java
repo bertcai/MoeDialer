@@ -7,8 +7,11 @@ import android.media.ToneGenerator;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +19,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.example.cc.moedialer.*;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by cc on 18-1-2.
@@ -38,6 +43,39 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
         LayoutInflater.from(context).inflate(R.layout.dialpad, this);
 
         inputPhoneNum = (EditText) findViewById(R.id.input_phone_number);
+        disableShowInput();
+
+        inputPhoneNum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                inputPhoneNum.setSelection(inputPhoneNum.length());
+                if (inputPhoneNum.getText().toString().equals("")) {
+                    inputPhoneNum.setCursorVisible(false);
+                }
+            }
+        });
+
+        inputPhoneNum.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    inputPhoneNum.setCursorVisible(true);
+                }
+                return false;
+            }
+        });
+
+
         ImageButton delPhoneNum = (ImageButton) findViewById(R.id.delete_phone_number);
         FloatingActionButton call = (FloatingActionButton) findViewById(R.id.fab_call);
 
@@ -73,17 +111,36 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
                 Context.AUDIO_SERVICE);
         mDTMFToneEnabled = Settings.System.getInt(
                 context.getContentResolver(),
-                Settings.System.DTMF_TONE_WHEN_DIALING,1)==1;
-        synchronized (mToneGeneratorLock){
-            if(mToneGenerator == null){
+                Settings.System.DTMF_TONE_WHEN_DIALING, 1) == 1;
+        synchronized (mToneGeneratorLock) {
+            if (mToneGenerator == null) {
                 try {
                     mToneGenerator = new ToneGenerator(
                             AudioManager.STREAM_MUSIC, 80);
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     mToneGenerator = null;
                 }
             }
+        }
+
+    }
+
+    public void disableShowInput() {
+
+        Class<EditText> cls = EditText.class;
+        Method method;
+        try {
+            method = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
+            method.setAccessible(true);
+            method.invoke(inputPhoneNum, false);
+        } catch (Exception e) {//TODO: handle exception
+        }
+        try {
+            method = cls.getMethod("setSoftInputShownOnFocus", boolean.class);
+            method.setAccessible(true);
+            method.invoke(inputPhoneNum, false);
+        } catch (Exception e) {//TODO: handle exception
         }
 
     }
@@ -154,19 +211,19 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    private void playTone(int tone){
-        if(!mDTMFToneEnabled){
+    private void playTone(int tone) {
+        if (!mDTMFToneEnabled) {
             return;
         }
 
         int ringerMode = mAudioManager.getRingerMode();
-        if((ringerMode==mAudioManager.RINGER_MODE_SILENT
-                ||ringerMode==mAudioManager.RINGER_MODE_VIBRATE)){
+        if ((ringerMode == mAudioManager.RINGER_MODE_SILENT
+                || ringerMode == mAudioManager.RINGER_MODE_VIBRATE)) {
             return;
         }
 
         synchronized (mToneGeneratorLock) {
-            if(mToneGenerator==null){
+            if (mToneGenerator == null) {
                 return;
             }
             mToneGenerator.startTone(tone, TONE_LENGTH_MS);
@@ -186,12 +243,23 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
 
     private void deleteNum() {
         String temp = inputPhoneNum.getText().toString();
-        if (temp.length() == 5) {
-            inputPhoneNum.setText(temp.substring(0, temp.length() - 2));
-        } else if ((temp.length() - 4) % 6 == 0) {
-            inputPhoneNum.setText(temp.substring(0, temp.length() - 2));
-        } else
-            inputPhoneNum.setText(temp.substring(0, temp.length() - 1));
+        int select = temp.length();
+        select = inputPhoneNum.getSelectionStart();
+        String str1;
+        String str2;
+        if (select == 5) {
+            str1 = temp.substring(0, select - 2);
+            str2 = temp.substring(select, temp.length());
+            inputPhoneNum.setText(str1 + str2);
+        } else if ((select - 4) % 6 == 0) {
+            str1 = temp.substring(0, select - 2);
+            str2 = temp.substring(select, temp.length());
+            inputPhoneNum.setText(str1 + str2);
+        } else {
+            str1 = temp.substring(0, select - 1);
+            str2 = temp.substring(select, temp.length());
+            inputPhoneNum.setText(str1 + str2);
+        }
     }
 
     private void call(String number) {
@@ -204,7 +272,7 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    public String getText(){
+    public String getText() {
         return inputPhoneNum.getText().toString();
     }
 }

@@ -24,12 +24,16 @@ import java.util.List;
 
 public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
     private List<CallItemModel> list = null;
+    private final static int ITEM_TYPE_FOOTER = 1;
     private Context mContext;
     private Fragment parent;
 
 
     public CallAdapter(Fragment parent, Context mContext, List<CallItemModel> list) {
+//        CallItemModel last = new CallItemModel(null, null, null,
+//                null, null, -1, null);
         this.list = list;
+//        list.add(last);
         this.parent = parent;
     }
 
@@ -51,62 +55,81 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
 
     private void onClickButton(CallItemModel mContent) {
         Intent intent = new Intent(parent.getContext(), CallDetailActivity.class);
-        intent.putExtra("item",mContent);
+        intent.putExtra("item", mContent);
         parent.startActivity(intent);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.call_item, parent, false);
-        final ViewHolder holder = new ViewHolder(view);
-        holder.callItemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = holder.getAdapterPosition();
-                CallItemModel mContent = list.get(position);
-                onClickItem(mContent.getNumber());
-            }
-        });
-        holder.callDataButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (viewType == ITEM_TYPE_FOOTER) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.footer_item, parent, false);
+            FooterHolder holder = new FooterHolder(view);
+            return holder;
+        } else {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.call_item, parent, false);
+            final ViewHolder holder = new ViewHolder(view);
+            holder.callItemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = holder.getAdapterPosition();
+                    CallItemModel mContent = list.get(position);
+                    onClickItem(mContent.getNumber());
+                }
+            });
+            holder.callDataButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 //                Toast.makeText(parent.getContext(), "You click the button", Toast.LENGTH_LONG)
 //                        .show();
-                int position = holder.getAdapterPosition();
-                CallItemModel mContent = list.get(position);
-                onClickButton(mContent);
-            }
-        });
-        return holder;
+                    int position = holder.getAdapterPosition();
+                    CallItemModel mContent = list.get(position);
+                    onClickButton(mContent);
+                }
+            });
+            return holder;
+        }
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final CallItemModel mContent = list.get(position);
-        String name = mContent.getName();
-        String number = mContent.getNumber();
-        String type = mContent.getType();
-        String duration = mContent.getCallTime();
-        String date = mContent.getDate();
-        holder.tvIsCallMade.setText("");
+        if (holder instanceof FooterHolder) {
 
-        if (name != null) {
-            holder.tvTitle.setText(name);
         } else {
-            holder.tvTitle.setText(number);
-        }
+            final CallItemModel mContent = list.get(position);
+            String name = mContent.getName();
+            String number = mContent.getNumber();
+            String type = mContent.getType();
+            String duration = mContent.getCallTime();
+            String date = mContent.getDate();
+            holder.tvIsCallMade.setText("");
+            if (name != null) {
+                holder.tvTitle.setText(name);
+            } else {
+                holder.tvTitle.setText(number);
+            }
 
-        if (type.equals("呼出")) {
-            holder.tvIsCallMade.setText(" ↗");
-        }
+            if (type.equals("呼出")) {
+                holder.tvIsCallMade.setText(" ↗");
+            }
 
-        if (type.equals("未接通")) {
-            holder.tvContent.setText(date + " 未接通");
-        } else if (duration.equals("")) {
-            holder.tvContent.setText(date + " 未接通");
+            if (type.equals("未接通")) {
+                holder.tvContent.setText(date + " 未接通");
+            } else if (duration.equals("")) {
+                holder.tvContent.setText(date + " 未接通");
+            } else {
+                holder.tvContent.setText(date + " " + type + duration);
+            }
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position + 1 == getItemCount()) {
+            return ITEM_TYPE_FOOTER;
         } else {
-            holder.tvContent.setText(date + " " + type + duration);
+            return 0;
         }
     }
 
@@ -134,6 +157,13 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.ViewHolder> {
             tvIsCallMade = (TextView) view.findViewById(R.id.is_call_made);
             callDataButton = (ImageButton) view.findViewById(R.id.call_data_btn);
             callItemView = view;
+        }
+    }
+
+    class FooterHolder extends ViewHolder {
+
+        public FooterHolder(View view) {
+            super(view);
         }
     }
 }
