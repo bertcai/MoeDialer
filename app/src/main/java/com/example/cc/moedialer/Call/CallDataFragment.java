@@ -17,6 +17,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.example.cc.moedialer.Dialer.DialerActivity;
@@ -39,7 +41,9 @@ public class CallDataFragment extends Fragment {
     private int lastOffset;
     private int lastPosition;
     private SharedPreferences sharedPreferences;
-    private FloatingActionButton dilerButton;
+//    private FloatingActionButton dialerButton;
+    private Animation fabAppearAnimation;
+    private Animation fabGoneAnimation;
 
     @Nullable
     @Override
@@ -61,6 +65,8 @@ public class CallDataFragment extends Fragment {
         callListView = (RecyclerView) callView.findViewById(R.id.call_lv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         callListView.setLayoutManager(layoutManager);
+        fabAppearAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.fab_visible);
+        fabGoneAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.fab_gone);
         callListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -74,14 +80,18 @@ public class CallDataFragment extends Fragment {
 //        initEvents();
 //        setAdapter();
 
-        dilerButton = (FloatingActionButton) callView.findViewById(R.id.dialer_button);
-        dilerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), DialerActivity.class);
-                getContext().startActivity(intent);
-            }
-        });
+//        dialerButton = (FloatingActionButton) callView.findViewById(R.id.dialer_button);
+//        dialerButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(dialerButton.getVisibility()==View.VISIBLE){
+//                    dialerButton.startAnimation(fabGoneAnimation);
+//                    dialerButton.setVisibility(View.GONE);
+//                }
+//                Intent intent = new Intent(getContext(), DialerActivity.class);
+//                getContext().startActivity(intent);
+//            }
+//        });
     }
 
     private void setAdapter() {
@@ -251,6 +261,10 @@ public class CallDataFragment extends Fragment {
     public void onPause() {
         super.onPause();
         getPositionAndOffset();
+//        if(dialerButton.getVisibility()==View.VISIBLE){
+//            dialerButton.startAnimation(fabGoneAnimation);
+//            dialerButton.setVisibility(View.GONE);
+//        }
     }
 
     //use resume to achieve live-update
@@ -260,6 +274,10 @@ public class CallDataFragment extends Fragment {
         readCallData();
         init();
         scrollToPosition();
+//        if(dialerButton.getVisibility()==View.GONE){
+//            dialerButton.startAnimation(fabAppearAnimation);
+//            dialerButton.setVisibility(View.VISIBLE);
+//        }
     }
 
     private void scrollToPosition() {

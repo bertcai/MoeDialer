@@ -18,14 +18,19 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cc.moedialer.EditTextWithDel;
+import com.example.cc.moedialer.MyApplication;
 import com.example.cc.moedialer.PinyinComparator;
 import com.example.cc.moedialer.PinyinUtils;
 import com.example.cc.moedialer.R;
@@ -46,7 +51,9 @@ public class ContactFragment extends Fragment {
     private EditTextWithDel mEtSearchName;
     private List<ContactItemModel> sourceDataList;
     private View view;
-    private FloatingActionButton addContact;
+//    private FloatingActionButton addContact;
+    private Animation fabVisible;
+    private Animation fabGone;
     List<ContactItemModel> sourceModelList;
 
     @Nullable
@@ -68,7 +75,9 @@ public class ContactFragment extends Fragment {
         sideBar = (SideBar) view.findViewById(R.id.sidebar);
         dialog = (TextView) view.findViewById(R.id.dialog);
         mEtSearchName = (EditTextWithDel) view.findViewById(R.id.edit_search);
-        addContact = (FloatingActionButton) view.findViewById(R.id.add_contact);
+//        addContact = (FloatingActionButton) view.findViewById(R.id.add_contact);
+        fabVisible = AnimationUtils.loadAnimation(this.getContext(), R.anim.fab_visible);
+        fabGone = AnimationUtils.loadAnimation(this.getContext(), R.anim.fab_gone);
         initData();
         initEvents();
         setAdapter();
@@ -140,18 +149,36 @@ public class ContactFragment extends Fragment {
         mEtSearchName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return (event.getKeyCode()==KeyEvent.KEYCODE_ENTER);
+                return (event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
             }
         });
 
-        addContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_INSERT,
-                        Uri.parse("content://com.android.contacts/contacts"));
-                startActivity(intent);
-            }
-        });
+        //touch listener
+//        mEtSearchName.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (addContact.getVisibility() == View.VISIBLE) {
+//                    addContact.startAnimation(fabGone);
+//                    addContact.setVisibility(View.GONE);
+//                } else {
+//                    addContact.startAnimation(fabVisible);
+//                    addContact.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        });
+
+//        addContact.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (addContact.getVisibility() == View.VISIBLE) {
+//                    addContact.startAnimation(fabGone);
+//                    addContact.setVisibility(View.GONE);
+//                }
+//                Intent intent = new Intent(Intent.ACTION_INSERT,
+//                        Uri.parse("content://com.android.contacts/contacts"));
+//                startActivity(intent);
+//            }
+//        });
     }
 
     private void initData() {
@@ -263,10 +290,24 @@ public class ContactFragment extends Fragment {
         super.onResume();
         readContacts();
         init();
+//        if(addContact.getVisibility()==View.GONE){
+//            addContact.startAnimation(fabVisible);
+//            addContact.setVisibility(View.VISIBLE);
+//        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+//        if(addContact.getVisibility()==View.VISIBLE){
+//            addContact.startAnimation(fabGone);
+//            addContact.setVisibility(View.GONE);
+//        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
     }
+
 }

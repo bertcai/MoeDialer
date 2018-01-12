@@ -13,6 +13,8 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,25 +32,31 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
     private EditText inputPhoneNum;
     Context context;
     AttributeSet attrs;
+
     private ToneGenerator mToneGenerator;
     private Object mToneGeneratorLock = new Object();
     private Boolean mDTMFToneEnabled;
     private static final int TONE_LENGTH_MS = 150;
     private AudioManager mAudioManager;
+    private boolean isEmpty = true;
+    private int selectStartSave;
+    private int oldLength;
+    private int newLength;
 
     public DialpadView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         this.attrs = attrs;
         LayoutInflater.from(context).inflate(R.layout.dialpad, this);
+        FloatingActionButton call = (FloatingActionButton) findViewById(R.id.fab_call);
 
-        inputPhoneNum = (EditText) findViewById(R.id.input_phone_number);
-        disableShowInput();
+        inputPhoneNum = (DialerEditText) findViewById(R.id.input_phone_number);
 
         inputPhoneNum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                selectStartSave = inputPhoneNum.getSelectionStart();
+                oldLength = inputPhoneNum.length();
             }
 
             @Override
@@ -58,26 +66,28 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable s) {
-                inputPhoneNum.setSelection(inputPhoneNum.length());
-                if (inputPhoneNum.getText().toString().equals("")) {
+                if (isEmpty()) {
+                    isEmpty = true;
                     inputPhoneNum.setCursorVisible(false);
+                } else {
+                    isEmpty = false;
+                    newLength = inputPhoneNum
+
                 }
             }
         });
 
-        inputPhoneNum.setOnTouchListener(new OnTouchListener() {
+        inputPhoneNum.setOnClickListener(new OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+            public void onClick(View v) {
+                if (!isEmpty) {
                     inputPhoneNum.setCursorVisible(true);
                 }
-                return false;
             }
         });
 
 
         ImageButton delPhoneNum = (ImageButton) findViewById(R.id.delete_phone_number);
-        FloatingActionButton call = (FloatingActionButton) findViewById(R.id.fab_call);
 
         Button[] buttons = new Button[12];
         buttons[0] = (Button) findViewById(R.id.zero);
@@ -122,25 +132,6 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
                     mToneGenerator = null;
                 }
             }
-        }
-
-    }
-
-    public void disableShowInput() {
-
-        Class<EditText> cls = EditText.class;
-        Method method;
-        try {
-            method = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
-            method.setAccessible(true);
-            method.invoke(inputPhoneNum, false);
-        } catch (Exception e) {//TODO: handle exception
-        }
-        try {
-            method = cls.getMethod("setSoftInputShownOnFocus", boolean.class);
-            method.setAccessible(true);
-            method.invoke(inputPhoneNum, false);
-        } catch (Exception e) {//TODO: handle exception
         }
 
     }
@@ -191,11 +182,11 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
                 break;
             case R.id.star_key:
                 inputAdd('*');
-                playTone(42);
+                playTone(ToneGenerator.TONE_DTMF_S);
                 break;
             case R.id.pound_key:
                 inputAdd('#');
-                playTone(35);
+                playTone(ToneGenerator.TONE_DTMF_P);
                 break;
             case R.id.delete_phone_number:
                 temp = inputPhoneNum.getText().toString();
@@ -243,21 +234,29 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
 
     private void deleteNum() {
         String temp = inputPhoneNum.getText().toString();
-        int select = temp.length();
+        int select = inputPhoneNum.length();
+        int selectEnd;
         select = inputPhoneNum.getSelectionStart();
+        selectEnd = inputPhoneNum.getSelectionEnd();
         String str1;
         String str2;
-        if (select == 5) {
-            str1 = temp.substring(0, select - 2);
-            str2 = temp.substring(select, temp.length());
-            inputPhoneNum.setText(str1 + str2);
-        } else if ((select - 4) % 6 == 0) {
-            str1 = temp.substring(0, select - 2);
-            str2 = temp.substring(select, temp.length());
-            inputPhoneNum.setText(str1 + str2);
+        if (select == selectEnd) {
+            if (select == 5) {
+                str1 = temp.substring(0, select - 2);
+                str2 = temp.substring(select, temp.length());
+                inputPhoneNum.setText(str1 + str2);
+            } else if ((select - 4) % 6 == 0) {
+                str1 = temp.substring(0, select - 2);
+                str2 = temp.substring(select, temp.length());
+                inputPhoneNum.setText(str1 + str2);
+            } else {
+                str1 = temp.substring(0, select - 1);
+                str2 = temp.substring(select, temp.length());
+                inputPhoneNum.setText(str1 + str2);
+            }
         } else {
-            str1 = temp.substring(0, select - 1);
-            str2 = temp.substring(select, temp.length());
+            str1 = temp.substring(0, select);
+            str2 = temp.substring(selectEnd, temp.length());
             inputPhoneNum.setText(str1 + str2);
         }
     }
@@ -270,6 +269,10 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
         } catch (SecurityException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isEmpty() {
+        return inputPhoneNum.length() == 0;
     }
 
     public String getText() {

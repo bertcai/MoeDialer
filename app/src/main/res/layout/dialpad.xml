@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp">
 
-        <EditText
+        <com.example.cc.moedialer.Dialer.DialerEditText
             android:id="@+id/input_phone_number"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -19,8 +19,13 @@
             android:layout_weight="7"
             android:height="60dp"
             android:background="@null"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="true"
+            android:freezesText="true"
             android:gravity="center"
-            android:inputType="phone"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/cursor_color"
             android:textSize="30sp" />
 
         <ImageButton
@@ -209,6 +214,7 @@
                 android:layout_gravity="center"
                 android:clickable="true"
                 android:src="@drawable/ic_call_white_24dp"
+                android:visibility="invisible"
                 app:backgroundTint="@color/call"
                 app:rippleColor="@color/callPress" />
         </FrameLayout>
