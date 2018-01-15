@@ -42,8 +42,7 @@ public class CallDataFragment extends Fragment {
     private int lastPosition;
     private SharedPreferences sharedPreferences;
 //    private FloatingActionButton dialerButton;
-    private Animation fabAppearAnimation;
-    private Animation fabGoneAnimation;
+
 
     @Nullable
     @Override
@@ -65,8 +64,6 @@ public class CallDataFragment extends Fragment {
         callListView = (RecyclerView) callView.findViewById(R.id.call_lv);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         callListView.setLayoutManager(layoutManager);
-        fabAppearAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.fab_visible);
-        fabGoneAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.fab_gone);
         callListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -291,7 +288,8 @@ public class CallDataFragment extends Fragment {
 
         if (callListView.getLayoutManager() != null && lastPosition >= 0) {
 
-            ((LinearLayoutManager) callListView.getLayoutManager()).scrollToPositionWithOffset(lastPosition, lastOffset);
+            ((LinearLayoutManager) callListView.getLayoutManager())
+                    .scrollToPositionWithOffset(lastPosition, lastOffset);
 
         }
 

@@ -34,7 +34,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:background="@drawable/ripple"
+            android:background="@drawable/dialer_button_ripple"
             android:src="@drawable/ic_backspace_black_18dp" />
     </LinearLayout>
 

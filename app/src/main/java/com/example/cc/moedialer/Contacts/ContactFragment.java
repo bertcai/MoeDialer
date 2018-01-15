@@ -34,6 +34,7 @@ import com.example.cc.moedialer.MyApplication;
 import com.example.cc.moedialer.PinyinComparator;
 import com.example.cc.moedialer.PinyinUtils;
 import com.example.cc.moedialer.R;
+import com.example.cc.moedialer.SortListActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +43,6 @@ import java.util.List;
 /**
  * Created by cc on 18-1-3.
  */
-
 public class ContactFragment extends Fragment {
     private ListView sortListView;
     private SideBar sideBar;
@@ -50,20 +50,20 @@ public class ContactFragment extends Fragment {
     private SortAdapter adapter;
     private EditTextWithDel mEtSearchName;
     private List<ContactItemModel> sourceDataList;
-    private View view;
-//    private FloatingActionButton addContact;
-    private Animation fabVisible;
-    private Animation fabGone;
-    List<ContactItemModel> sourceModelList;
+    private View view; /*    private FloatingActionButton addContact;*/
+    private Animation sortVisible;
+    private Animation sortGone;
+    private List<ContactItemModel> sourceModelList;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.contact_list_fragment, container, false);
-        if (ContextCompat.checkSelfPermission(this.getContext(),
-                Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED)
             this.requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 1);
-        } else {
+        else {
             readContacts();
             init();
         }
@@ -75,9 +75,9 @@ public class ContactFragment extends Fragment {
         sideBar = (SideBar) view.findViewById(R.id.sidebar);
         dialog = (TextView) view.findViewById(R.id.dialog);
         mEtSearchName = (EditTextWithDel) view.findViewById(R.id.edit_search);
-//        addContact = (FloatingActionButton) view.findViewById(R.id.add_contact);
-        fabVisible = AnimationUtils.loadAnimation(this.getContext(), R.anim.fab_visible);
-        fabGone = AnimationUtils.loadAnimation(this.getContext(), R.anim.fab_gone);
+        /*        addContact = (FloatingActionButton) view.findViewById(R.id.add_contact);*/
+        sortVisible = AnimationUtils.loadAnimation(this.getContext(), R.anim.activity_open);
+        sortGone = AnimationUtils.loadAnimation(this.getContext(), R.anim.activity_close);
         initData();
         initEvents();
         setAdapter();
@@ -89,96 +89,41 @@ public class ContactFragment extends Fragment {
         Collections.sort(sourceDataList, new PinyinComparator());
         adapter = new SortAdapter(this.getContext(), sourceDataList);
         sortListView.setAdapter(adapter);
-    }
+    } /*handle events*/
 
-    //handle events
-    private void initEvents() {
-
-        //sideBar events
+    private void initEvents() { /*sideBar events*/
         sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
             @Override
             public void onTouchingLetterChanged(String s) {
                 int position = adapter.getPositionForSection(s.charAt(0));
-                if (position != -1) {
-                    sortListView.setSelection(position);
-                }
+                if (position != -1) sortListView.setSelection(position);
             }
-        });
-
-        //click the item
+        }); /*click the item*/
         sortListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(parent.getContext(),
-//                        ((ContactItemModel) adapter.getItem(position)).getName(),
-//                        Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(parent.getContext(), ((ContactItemModel)
+                adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();*/
                 long contactId = ((ContactItemModel) adapter.getItem(position)).getId();
                 Uri peopleUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
                         contactId);
-
                 Intent intent = new Intent();
                 intent.setAction(ContactsContract.QuickContact.ACTION_QUICK_CONTACT);
                 intent.setData(peopleUri);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-//                intent.setAction(Intent.ACTION_VIEW);
-
+                /*intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                intent.setAction(Intent.ACTION_VIEW);*/
                 startActivity(intent);
             }
         });
-
-
-        //searchEdit event
-        mEtSearchName.addTextChangedListener(new TextWatcher() {
+        mEtSearchName.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterData(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public void onClick(View v) {
+                Intent intent = new Intent(ContactFragment.this.getContext(),
+                        SortListActivity.class);
+                intent.putExtra("sortStr", mEtSearchName.getText().toString());
+                ContactFragment.this.startActivity(intent);
             }
         });
-
-        //shield enter
-        mEtSearchName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return (event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
-            }
-        });
-
-        //touch listener
-//        mEtSearchName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (addContact.getVisibility() == View.VISIBLE) {
-//                    addContact.startAnimation(fabGone);
-//                    addContact.setVisibility(View.GONE);
-//                } else {
-//                    addContact.startAnimation(fabVisible);
-//                    addContact.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
-
-//        addContact.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (addContact.getVisibility() == View.VISIBLE) {
-//                    addContact.startAnimation(fabGone);
-//                    addContact.setVisibility(View.GONE);
-//                }
-//                Intent intent = new Intent(Intent.ACTION_INSERT,
-//                        Uri.parse("content://com.android.contacts/contacts"));
-//                startActivity(intent);
-//            }
-//        });
     }
 
     private void initData() {
@@ -187,19 +132,19 @@ public class ContactFragment extends Fragment {
 
     private void filterData(String filterStr) {
         List<ContactItemModel> mSortList = new ArrayList<>();
-        if (TextUtils.isEmpty(filterStr)) {
-            mSortList = sourceDataList;
-        } else {
+        filterStr = filterStr.replaceAll("[\\s]", "");
+        if (TextUtils.isEmpty(filterStr)) mSortList = sourceDataList;
+        else {
             mSortList.clear();
             for (ContactItemModel item : sourceDataList) {
                 String name = item.getName();
                 String number = item.getNumber();
-                if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase())
-                        != -1 || PinyinUtils.getAlpha(name).toUpperCase()
-                        .startsWith(filterStr.toString().toUpperCase())
-                        || number.contains(filterStr.toString())) {
+                number = number.replaceAll("[^0-9]", "");
+                if (name.toUpperCase().indexOf(filterStr.toUpperCase()) != -1
+                        || PinyinUtils.getAlpha(name).toUpperCase()
+                        .startsWith(filterStr.toUpperCase())
+                        || number.contains(filterStr))
                     mSortList.add(item);
-                }
             }
         }
         Collections.sort(mSortList, new PinyinComparator());
@@ -209,77 +154,63 @@ public class ContactFragment extends Fragment {
     private List<ContactItemModel> filledData(List<ContactItemModel> sourceList) {
         List<ContactItemModel> mSortList = new ArrayList<>();
         ArrayList<String> indexString = new ArrayList<>();
-
         for (int i = 0; i < sourceList.size(); i++) {
-//            ContactItemModel sortModel = new ContactItemModel();
-//            sortModel.setName(date[i]);
             String pinyin = PinyinUtils.getAlpha(sourceList.get(i).getName());
+            /*check input*/
+            if (pinyin.length() < 1) continue;
             String sortString = pinyin.substring(0, 1).toUpperCase();
             if (sortString.matches("[A-Z]")) {
                 sourceList.get(i).setSortLetter(sortString.toUpperCase());
-                if (!indexString.contains(sortString)) {
-                    indexString.add(sortString);
-                }
-            } else {
-                sourceList.get(i).setSortLetter("#");
-            }
+                if (!indexString.contains(sortString)) indexString.add(sortString);
+            } else sourceList.get(i).setSortLetter("#");
             mSortList.add(sourceList.get(i));
         }
         Collections.sort(indexString);
         sideBar.setIndexText(indexString);
         return mSortList;
-    }
+    } /*read contacts*/
 
-    //read contacts
     private void readContacts() {
         sourceModelList = new ArrayList<>();
         int i = 0;
         Cursor cursor = null;
         try {
-            cursor = this.getContext()
-                    .getContentResolver()
-                    .query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                            null,
-                            null,
-                            null,
-                            null);
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    String displayName = cursor.getString(cursor.getColumnIndex(
-                            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                    String displayNumber = cursor.getString(cursor.getColumnIndex(
-                            ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    long contactsId = cursor.getInt(cursor.getColumnIndex(
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
-                    ContactItemModel item = new ContactItemModel();
-                    item.setName(displayName);
-                    item.setId(contactsId);
-                    item.setNumber(displayNumber);
-                    sourceModelList.add(item);
-                    i++;
-                }
+            cursor = this.getContext().getContentResolver().query(ContactsContract.
+                            CommonDataKinds.Phone.CONTENT_URI, null, null,
+                    null, null);
+            if (cursor != null) while (cursor.moveToNext()) {
+                String displayName = cursor.getString(cursor
+                        .getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                String displayNumber = cursor.getString(cursor
+                        .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                long contactsId = cursor.getInt(cursor
+                        .getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
+                ContactItemModel item = new ContactItemModel();
+                if (displayName == null) item.setName("");
+                else item.setName(displayName);
+                item.setId(contactsId);
+                item.setNumber(displayNumber);
+                sourceModelList.add(item);
+                i++;
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+            if (cursor != null) cursor.close();
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     readContacts();
                     init();
-                } else {
+                } else
                     Toast.makeText(this.getContext(), "You denied the permission",
                             Toast.LENGTH_LONG).show();
-                }
                 break;
             default:
         }
@@ -290,19 +221,11 @@ public class ContactFragment extends Fragment {
         super.onResume();
         readContacts();
         init();
-//        if(addContact.getVisibility()==View.GONE){
-//            addContact.startAnimation(fabVisible);
-//            addContact.setVisibility(View.VISIBLE);
-//        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-//        if(addContact.getVisibility()==View.VISIBLE){
-//            addContact.startAnimation(fabGone);
-//            addContact.setVisibility(View.GONE);
-//        }
     }
 
     @Override

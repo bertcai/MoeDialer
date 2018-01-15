@@ -11,13 +11,12 @@ import com.example.cc.moedialer.R;
 /**
  * Created by cc on 18-1-9.
  */
-
 public class CallItemView extends LinearLayout {
     private Context context;
     private AttributeSet attrs;
     private ImageButton callDataBtn;
 
-    public CallItemView(Context context, AttributeSet attrs){
+    public CallItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         this.attrs = attrs;

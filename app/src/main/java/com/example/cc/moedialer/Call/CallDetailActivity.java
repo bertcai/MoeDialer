@@ -13,8 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;;
-import android.view.View;
+import android.os.Bundle;;import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,7 +22,6 @@ import android.widget.Toast;
 import com.example.cc.moedialer.R;
 
 public class CallDetailActivity extends AppCompatActivity implements View.OnClickListener {
-
     private TextView onlyNumber;
     private TextView name;
     private TextView number;
@@ -38,7 +36,6 @@ public class CallDetailActivity extends AppCompatActivity implements View.OnClic
     private View sendMessage;
     private View delete;
     private CallItemModel itemContent;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +60,7 @@ public class CallDetailActivity extends AppCompatActivity implements View.OnClic
         copy = findViewById(R.id.copy_number);
         modifyCall = findViewById(R.id.modify_call);
         sendMessage = findViewById(R.id.send_message);
-        delete = findViewById(R.id.delete_call_log);
-
-        //title set
+        delete = findViewById(R.id.delete_call_log); /*title set*/
         if (mContent.getName() == null) {
             onlyNumber.setText(mContent.getNumber());
             onlyNumber.setVisibility(View.VISIBLE);
@@ -77,12 +72,8 @@ public class CallDetailActivity extends AppCompatActivity implements View.OnClic
             number.setVisibility(View.VISIBLE);
             name.setText(mContent.getName());
             number.setText(mContent.getNumber());
-        }
-
-        //call button set
-        callButton.setOnClickListener(this);
-
-        //call type set
+        } /*call button set*/
+        callButton.setOnClickListener(this); /*call type set*/
         if (mContent.getType().equals("呼入")) {
             callMade.setVisibility(View.GONE);
             callReceived.setVisibility(View.VISIBLE);
@@ -94,11 +85,8 @@ public class CallDetailActivity extends AppCompatActivity implements View.OnClic
             callReceived.setVisibility(View.GONE);
             callDate.setText(mContent.getTrueDate());
             callDuration.setText(mContent.getCallTime());
-            if (mContent.getCallTime().equals("")) {
-                callType.setText("未接通");
-            } else {
-                callType.setText("呼出");
-            }
+            if (mContent.getCallTime().equals("")) callType.setText("未接通");
+            else callType.setText("呼出");
         } else {
             callMade.setVisibility(View.GONE);
             callReceived.setVisibility(View.VISIBLE);
@@ -106,7 +94,6 @@ public class CallDetailActivity extends AppCompatActivity implements View.OnClic
             callDate.setText(mContent.getTrueDate());
             callDuration.setText(mContent.getCallTime());
         }
-
         copy.setOnClickListener(this);
         modifyCall.setOnClickListener(this);
         sendMessage.setOnClickListener(this);
@@ -136,10 +123,10 @@ public class CallDetailActivity extends AppCompatActivity implements View.OnClic
 
     private void call(String number) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE},
-                    1);
-        } else {
+                != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE}, 1);
+        else {
             Intent intent = new Intent(Intent.ACTION_CALL);
             intent.setData(Uri.parse("tel:" + number));
             startActivity(intent);
@@ -150,11 +137,9 @@ public class CallDetailActivity extends AppCompatActivity implements View.OnClic
         ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData mClipData = ClipData.newPlainText("label", number);
         cm.setPrimaryClip(mClipData);
-        Toast.makeText(this, "文本已复制",
-                Toast.LENGTH_LONG).show();
-    }
+        Toast.makeText(this, "文本已复制", Toast.LENGTH_LONG).show();
+    } /*now it jmp to system dialer*/
 
-    //now it jmp to system dialer
     private void modifyCallFunc(String number) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + number));
@@ -168,17 +153,13 @@ public class CallDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void delete(long id) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALL_LOG)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_CALL_LOG},
-                    1);
-        } else {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALL_LOG) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_CALL_LOG}, 1);
+        else {
             ContentResolver resolver = getContentResolver();
-            resolver.delete(CallLog.Calls.CONTENT_URI, "_id=?", new String[]{id+""});
+            resolver.delete(CallLog.Calls.CONTENT_URI, "_id=?", new String[]{id + ""});
             finish();
         }
-
     }
 
     @Override
@@ -186,11 +167,7 @@ public class CallDetailActivity extends AppCompatActivity implements View.OnClic
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                } else {
-                    Toast.makeText(this, "You denied the permission",
-                            Toast.LENGTH_LONG).show();
-                }
+                } else Toast.makeText(this, "You denied the permission", Toast.LENGTH_LONG).show();
         }
     }
 }

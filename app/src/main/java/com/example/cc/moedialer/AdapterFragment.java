@@ -16,7 +16,7 @@ public class AdapterFragment extends FragmentPagerAdapter {
     ArrayList<String> titleList = new ArrayList<>();
 
     public AdapterFragment(FragmentManager fragmentManager, List<Fragment> mFragment,
-                           ArrayList<String> titleList){
+                           ArrayList<String> titleList) {
         super(fragmentManager);
         this.mFragment = mFragment;
         this.titleList = titleList;

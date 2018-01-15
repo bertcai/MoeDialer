@@ -5,8 +5,7 @@ import java.io.Serializable;
 /**
  * Created by cc on 18-1-9.
  */
-
-public class CallItemModel implements Serializable{
+public class CallItemModel implements Serializable {
     private String name;
     private String type;
     private String date;
@@ -15,8 +14,8 @@ public class CallItemModel implements Serializable{
     private String callTime;
     private long call_id;
 
-    public CallItemModel(String name, String type, String date,
-                         String number, String callTime, long id, String trueDate) {
+    public CallItemModel(String name, String type, String date, String number, String callTime,
+                         long id, String trueDate) {
         this.name = name;
         this.type = type;
         this.date = date;

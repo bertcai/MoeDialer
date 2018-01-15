@@ -1,7 +1,6 @@
 package com.example.cc.moedialer;
 
 
-
 import com.example.cc.moedialer.Contacts.ContactItemModel;
 
 import java.util.Comparator;

@@ -11,7 +11,6 @@ import com.example.cc.moedialer.R;
 /**
  * Created by cc on 18-1-11.
  */
-
 public class FooterItemView extends LinearLayout {
     private Context context;
     private AttributeSet attrs;
@@ -21,7 +20,5 @@ public class FooterItemView extends LinearLayout {
         this.context = context;
         this.attrs = attrs;
         LayoutInflater.from(context).inflate(R.layout.footer_item, this);
-
     }
-
 }

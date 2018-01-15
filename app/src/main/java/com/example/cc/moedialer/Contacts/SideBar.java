@@ -19,13 +19,10 @@ import java.util.List;
 /**
  * Created by cc on 18-1-3.
  */
-
 public class SideBar extends View {
-
-    public static String[] INDEX_STRING = {"A", "B", "C", "D", "E", "F", "G", "H", "I",
-            "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-            "W", "X", "Y", "Z", "#"};
-
+    public static String[] INDEX_STRING = {"A", "B", "C", "D", "E", "F", "G",
+            "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R",
+            "S", "T", "U", "V", "W", "X", "Y", "Z", "#"};
     private OnTouchingLetterChangedListener onTouchingLetterChangedListener;
     private List<String> letterList;
     private int choose = -1;
@@ -59,15 +56,12 @@ public class SideBar extends View {
         int height = getHeight();
         int width = getWidth();
         int singleHeight = 0;
-        if(letterList.size()!=0) {
-            singleHeight = height / letterList.size();
-        }
+        if (letterList.size() != 0) singleHeight = height / letterList.size();
         for (int i = 0; i < letterList.size(); i++) {
             paint.setColor(context.getColor(R.color.sideBarText));
             paint.setTypeface(Typeface.DEFAULT_BOLD);
             paint.setAntiAlias(true);
             paint.setTextSize(20);
-
             if (i == choose) {
                 paint.setColor(context.getColor((R.color.sideBarChose)));
                 paint.setFakeBoldText(true);
@@ -86,31 +80,23 @@ public class SideBar extends View {
         final int oldChoose = choose;
         final OnTouchingLetterChangedListener listener = onTouchingLetterChangedListener;
         final int c = (int) (y / getHeight() * letterList.size());
-
         switch (action) {
             case MotionEvent.ACTION_UP:
                 setBackgroundColor(context.getColor(R.color.sideBarBackground));
                 choose = -1;
                 invalidate();
-                if (mTextDialog != null) {
-                    mTextDialog.setVisibility(View.GONE);
-                }
+                if (mTextDialog != null) mTextDialog.setVisibility(View.GONE);
                 break;
-            default:
-//                setBackgroundResource(R.drawable.search_edit_background);
+            default: /*                setBackgroundResource(R.drawable.search_edit_background);*/
                 setBackgroundColor(context.getColor(R.color.sideBarPress));
-                if (oldChoose != c) {
-                    if (c >= 0 && c < letterList.size()) {
-                        if (listener != null) {
-                            listener.onTouchingLetterChanged(letterList.get(c));
-                        }
-                        if (mTextDialog != null) {
-                            mTextDialog.setText(letterList.get(c));
-                            mTextDialog.setVisibility(View.VISIBLE);
-                        }
-                        choose = c;
-                        invalidate();
+                if (oldChoose != c) if (c >= 0 && c < letterList.size()) {
+                    if (listener != null) listener.onTouchingLetterChanged(letterList.get(c));
+                    if (mTextDialog != null) {
+                        mTextDialog.setText(letterList.get(c));
+                        mTextDialog.setVisibility(View.VISIBLE);
                     }
+                    choose = c;
+                    invalidate();
                 }
                 break;
         }
@@ -122,17 +108,14 @@ public class SideBar extends View {
         invalidate();
     }
 
-
     public void setTextView(TextView mTextDialog) {
         this.mTextDialog = mTextDialog;
     }
-
 
     public void setOnTouchingLetterChangedListener(
             OnTouchingLetterChangedListener onTouchingLetterChangedListener) {
         this.onTouchingLetterChangedListener = onTouchingLetterChangedListener;
     }
-
 
     public interface OnTouchingLetterChangedListener {
         void onTouchingLetterChanged(String s);

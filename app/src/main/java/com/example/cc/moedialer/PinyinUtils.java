@@ -13,8 +13,13 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 public class PinyinUtils {
     //get the first letter
     public static String getAlpha(String chinese) {
+        char[] nameChar;
         String pinyinName = "";
-        char[] nameChar = chinese.toCharArray();
+        if (chinese != null) {
+            nameChar = chinese.toCharArray();
+        } else {
+            return "#";
+        }
         HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
         defaultFormat.setCaseType(HanyuPinyinCaseType.UPPERCASE);
         defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);

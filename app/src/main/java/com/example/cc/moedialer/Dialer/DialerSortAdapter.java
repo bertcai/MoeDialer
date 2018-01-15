@@ -1,4 +1,4 @@
-package com.example.cc.moedialer.Contacts;
+package com.example.cc.moedialer.Dialer;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,18 +8,21 @@ import android.widget.BaseAdapter;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-import com.example.cc.moedialer.*;
+import com.example.cc.moedialer.Contacts.ContactItemModel;
+import com.example.cc.moedialer.Contacts.SortAdapter;
+import com.example.cc.moedialer.R;
 
 import java.util.List;
 
 /**
- * Created by cc on 18-1-3.
+ * Created by cc on 18-1-15.
  */
-public class SortAdapter extends BaseAdapter implements SectionIndexer {
+
+public class DialerSortAdapter extends BaseAdapter implements SectionIndexer {
     private List<ContactItemModel> list = null;
     private Context mContext;
 
-    public SortAdapter(Context mContext, List<ContactItemModel> list) {
+    public DialerSortAdapter(Context mContext, List<ContactItemModel> list) {
         this.mContext = mContext;
         this.list = list;
     }
@@ -44,27 +47,31 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
     }
 
     public View getView(final int position, View view, ViewGroup arg2) {
-        ViewHolder viewHolder = null;
+        DialerSortAdapter.ViewHolder viewHolder = null;
         final ContactItemModel mContent = list.get(position);
         if (view == null) {
             viewHolder = new ViewHolder();
-            view = LayoutInflater.from(mContext).inflate(R.layout.contact_item, null);
-            viewHolder.tvTitle = (TextView) view.findViewById(R.id.contact_name);
+            view = LayoutInflater.from(mContext).inflate(R.layout.contact_sort_item, null);
+            viewHolder.tvName = (TextView) view.findViewById(R.id.dialer_contact_name);
             view.setTag(viewHolder);
-            viewHolder.tvLetter = (TextView) view.findViewById(R.id.contact_category);
-        } else viewHolder = (ViewHolder) view.getTag();
+            viewHolder.tvNumber = (TextView) view.findViewById(R.id.dialer_contact_number);
+        } else {
+            viewHolder = (DialerSortAdapter.ViewHolder) view.getTag();
+        }
+
         int section = getSectionForPosition(position);
-        if (position == getPositionForSection(section)) {
-            viewHolder.tvLetter.setVisibility(View.VISIBLE);
-            viewHolder.tvLetter.setText(mContent.getSortLetters());
-        } else viewHolder.tvLetter.setVisibility(View.GONE);
-        viewHolder.tvTitle.setText(this.list.get(position).getName());
+
+        viewHolder.tvName.setText(this.list.get(position).getName());
+        viewHolder.tvNumber.setText(this.list.get(position).getNumber());
+
         return view;
+
     }
 
+
     final static class ViewHolder {
-        TextView tvLetter;
-        TextView tvTitle;
+        TextView tvName;
+        TextView tvNumber;
     }
 
     public int getSectionForPosition(int position) {
@@ -75,7 +82,9 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
         for (int i = 0; i < getCount(); i++) {
             String sortStr = list.get(i).getSortLetters();
             char firstChar = sortStr.toUpperCase().charAt(0);
-            if (firstChar == section) return i;
+            if (firstChar == section) {
+                return i;
+            }
         }
         return -1;
     }

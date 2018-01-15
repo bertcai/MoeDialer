@@ -23,6 +23,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
+            android:focusable="false"
+            android:hint="搜索联系人"
+            android:textCursorDrawable="@drawable/cursor_color"
             android:background="@drawable/search_edit_background" />
     </LinearLayout>
 

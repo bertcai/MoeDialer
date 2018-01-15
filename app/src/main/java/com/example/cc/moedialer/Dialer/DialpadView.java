@@ -56,7 +56,7 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 selectStartSave = inputPhoneNum.getSelectionStart();
-                oldLength = inputPhoneNum.length();
+//                oldLength = inputPhoneNum.length();
             }
 
             @Override
@@ -71,8 +71,7 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
                     inputPhoneNum.setCursorVisible(false);
                 } else {
                     isEmpty = false;
-                    newLength = inputPhoneNum
-
+//                    newLength = inputPhoneNum.length();
                 }
             }
         });
@@ -234,10 +233,14 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
 
     private void deleteNum() {
         String temp = inputPhoneNum.getText().toString();
-        int select = inputPhoneNum.length();
+        int select;
         int selectEnd;
         select = inputPhoneNum.getSelectionStart();
         selectEnd = inputPhoneNum.getSelectionEnd();
+        if (select == 0 && selectEnd == 0) {
+            select = inputPhoneNum.length();
+            selectEnd = select;
+        }
         String str1;
         String str2;
         if (select == selectEnd) {
@@ -258,6 +261,20 @@ public class DialpadView extends LinearLayout implements View.OnClickListener {
             str1 = temp.substring(0, select);
             str2 = temp.substring(selectEnd, temp.length());
             inputPhoneNum.setText(str1 + str2);
+//            inputPhoneNum.setSelection(inputPhoneNum.length());
+            select = inputPhoneNum.length();
+        }
+        if (select != selectEnd) {
+            inputPhoneNum.setSelection(inputPhoneNum.length());
+        } else if (select > 0) {
+            if (select == 5) {
+                newLength = select - 2;
+            } else if ((select - 4) % 6 == 0) {
+                newLength = select - 2;
+            } else {
+                newLength = select - 1;
+            }
+            inputPhoneNum.setSelection(newLength);
         }
     }
 

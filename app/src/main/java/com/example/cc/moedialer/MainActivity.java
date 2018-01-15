@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(floatButton.getVisibility()==View.GONE){
+        if (floatButton.getVisibility() == View.GONE) {
             floatButton.startAnimation(fabAppearAnimation);
             floatButton.setVisibility(View.VISIBLE);
         }

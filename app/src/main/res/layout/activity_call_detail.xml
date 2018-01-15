@@ -1,234 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_person_black_24dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="4"
-            android:orientation="vertical"
-            android:paddingLeft="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/only_number"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:text="TestName"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/call_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="浩子"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/call_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="177 **** 4962"
-                android:textColor="@color/sideBarText"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1">
-
-            <ImageButton
-                android:id="@+id/call_log_call"
+            <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@drawable/call_data_ripple"
-                android:src="@drawable/ic_phone_black_24dp" />
-        </FrameLayout>
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_person_black_24dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="4"
+                android:orientation="vertical"
+                android:paddingLeft="10dp">
+
+                <TextView
+                    android:id="@+id/only_number"
+                    android:layout_width="300dp"
+                    android:layout_height="60dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="TestName"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/call_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="浩子"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/call_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="177 **** 4962"
+                    android:textColor="@color/sideBarText"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/call_log_call"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/call_data_ripple"
+                    android:src="@drawable/ic_phone_black_24dp" />
+            </FrameLayout>
 
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:paddingLeft="5dp"
-            android:id="@+id/call_made"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/ic_call_made_black_24dp" />
-
-        <ImageView
-            android:paddingLeft="5dp"
-            android:id="@+id/call_received"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/ic_call_received_black_24dp"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:layout_marginTop="5dp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:orientation="vertical"
-            android:paddingLeft="15dp">
-
-            <TextView
-                android:id="@+id/call_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="呼出"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/call_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="2017-12-19 19:23:43"
-                android:textColor="@color/sideBarText"
-                android:textSize="10sp" />
         </LinearLayout>
 
-        <FrameLayout
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_weight="1">
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/call_made"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="5dp"
+                android:src="@drawable/ic_call_made_black_24dp" />
+
+            <ImageView
+                android:id="@+id/call_received"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="5dp"
+                android:src="@drawable/ic_call_received_black_24dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="4"
+                android:orientation="vertical"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    android:id="@+id/call_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="呼出"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/call_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="2017-12-19 19:23:43"
+                    android:textColor="@color/sideBarText"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/call_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:text="5分10秒" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/copy_number"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/call_data_ripple"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_content_copy_black_48dp" />
 
             <TextView
-                android:id="@+id/call_duration"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:text="5分10秒" />
-        </FrameLayout>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:text="复制号码" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/modify_call"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/call_data_ripple"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_mode_edit_black_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:text="拨打电话之前修改号码" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/send_message"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/call_data_ripple"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_message_black_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:text="发送短信" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/delete_call_log"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/call_data_ripple"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_delete_black_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:text="删除该记录" />
+        </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/copy_number"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/call_data_ripple"
-        android:clickable="true"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_content_copy_black_48dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:text="复制号码" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/modify_call"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/call_data_ripple"
-        android:clickable="true"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_mode_edit_black_24dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:text="拨打电话之前修改号码" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/send_message"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/call_data_ripple"
-        android:clickable="true"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_message_black_24dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:text="发送短信" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/delete_call_log"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/call_data_ripple"
-        android:clickable="true"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_delete_black_24dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:text="删除该记录" />
-    </LinearLayout>
-
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

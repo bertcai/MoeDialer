@@ -3,10 +3,9 @@ package com.example.cc.moedialer.Contacts;
 /**
  * Created by cc on 18-1-3.
  */
-
 public class ContactItemModel {
-    private String name; //the contact 's name
-    private String sortLetters; //the contact's name 's first PinYin
+    private String name; /*the contact 's name*/
+    private String sortLetters; /*the contact's name 's first PinYin*/
     private long id;
     private String number;
 
