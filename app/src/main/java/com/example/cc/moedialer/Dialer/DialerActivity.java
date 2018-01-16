@@ -178,10 +178,10 @@ public class DialerActivity extends AppCompatActivity {
 //            public void onScrollStateChanged(AbsListView view, int scrollState) {
 //                if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
 //                    if (sortList.getVisibility() == View.VISIBLE) {
-//                        Intent intent = new Intent(DialerActivity.this,
-//                                SortListActivity.class);
-//                        intent.putExtra("sortStr", inputPhoneNum.getText().toString());
-//                        DialerActivity.this.startActivity(intent);
+//                        if (dialpadView.getVisibility() == View.VISIBLE) {
+//                            dialpadView.startAnimation(outAnimation);
+//                            dialpadView.setVisibility(View.GONE);
+//                        }
 //                    }
 //                }
 //            }
